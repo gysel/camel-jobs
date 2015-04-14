@@ -1,32 +1,35 @@
 package ch.hsr.sa.eai.sandbox.server.rest;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.camel.Endpoint;
 import org.apache.camel.Exchange;
-import org.apache.camel.ProducerTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.camel.Route;
 import org.springframework.stereotype.Component;
+
+import ch.hsr.sa.eai.sandbox.server.rest.api.Job;
+import ch.hsr.sa.eai.sandbox.server.rest.api.Jobs;
 
 @Component(value = "restRouteManagement")
 public class RestRouteManagement {
 
-	private ProducerTemplate template;
+	private static final String ROUTE_PREFIX = "vm://trigger-";
 
-	@Autowired
-	public void setTemplate(ProducerTemplate template) {
-		this.template = template;
-	}
-	
-	public String process(Exchange exchange) {
-		HttpServletRequest request = exchange.getIn().getBody(HttpServletRequest.class);
-		if("GET".equals(request.getMethod())) {
-			return "job list: fx-import, foo, bar";
-		} else if ("POST".equals(request.getMethod())) {
-			String jobName = request.getParameter("jobName");
-			template.sendBodyAndHeader("jms:triggerQueue", "", "routeName", jobName);
-			return "start: " + jobName;
+	public Jobs process(Exchange exchange) {
+		List<Route> routes = exchange.getContext().getRoutes();
+		List<Job> result = new ArrayList<>();
+		for (Route route : routes) {
+			Endpoint endpoint = route.getEndpoint();
+			if (endpoint.getEndpointUri().startsWith(ROUTE_PREFIX)) {
+				String jobName = endpoint.getEndpointUri().replace(
+						ROUTE_PREFIX, "");
+				String uri = (String) exchange.getIn()
+						.getHeader("CamelHttpUrl") + "/" + jobName;
+				result.add(new Job(jobName, uri));
+			}
 		}
-		return "unsupported operation!";
+		return new Jobs(result);
 	}
 
 }
