@@ -51,14 +51,9 @@ public class JmsRouteStarterTest extends AbstractJUnit4SpringContextTests {
 
 			@Override
 			public void configure() throws Exception {
-				from("vm:trigger-somejob").id(JOB_NAME).to("log:ch.hsr.sa.eai.sandbox.server.jms").end(); // dummy
-																											// job
-																											// to
-																											// be
-																											// started
-																											// from
-																											// JMS
-				from("direct:send-jms").inOut("jms:JobTrigger?exchangePattern=InOut").to("mock:jmsreply");
+				// dummy job to be started from JMS
+				from("vm:trigger-somejob").id(JOB_NAME).to("log:ch.hsr.sa.eai.sandbox.server.jms").end();
+				from("direct:send-jms").inOut("jms:JobTrigger").to("mock:jmsreply");
 			}
 
 		});
