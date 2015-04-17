@@ -1,6 +1,10 @@
 package ch.hsr.sa.eai.sandbox.server;
 
+import javax.xml.bind.JAXBContext;
+
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.converter.jaxb.JaxbDataFormat;
+import org.apache.camel.spi.DataFormat;
 import org.springframework.stereotype.Component;
 
 import ch.hsr.sa.eai.sandbox.server.rest.api.JobResult;

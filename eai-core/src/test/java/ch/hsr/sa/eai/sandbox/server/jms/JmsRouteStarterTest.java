@@ -33,15 +33,15 @@ public class JmsRouteStarterTest extends AbstractJUnit4SpringContextTests {
 
 	@Test
 	public void testSendMessageAndExpectResult() throws Exception {
-		JobResult expectedBody = new JobResult();
-		expectedBody.setJobName(JOB_NAME);
-		expectedBody.setStatus(Status.SUCCESSFUL);
+		JobResult expectedResult = new JobResult();
+		expectedResult.setJobName(JOB_NAME);
+		expectedResult.setStatus(Status.SUCCESSFUL);
 
 		resultEndpoint.expectedMessageCount(1);
-		resultEndpoint.expectedBodiesReceived(expectedBody);
+		resultEndpoint.expectedBodiesReceived(JOB_NAME + expectedResult.getDetails());
 
 		template.sendBodyAndHeader(null, "JobName", JOB_NAME);
-		
+
 		resultEndpoint.assertIsSatisfied();
 	}
 
@@ -51,10 +51,16 @@ public class JmsRouteStarterTest extends AbstractJUnit4SpringContextTests {
 
 			@Override
 			public void configure() throws Exception {
-				from("vm:trigger-somejob").id(JOB_NAME).to("log:ch.hsr.sa.eai.sandbox.server.jms").end(); // dummy job to be started from JMS
+				from("vm:trigger-somejob").id(JOB_NAME).to("log:ch.hsr.sa.eai.sandbox.server.jms").end(); // dummy
+																											// job
+																											// to
+																											// be
+																											// started
+																											// from
+																											// JMS
 				from("direct:send-jms").inOut("jms:JobTrigger?exchangePattern=InOut").to("mock:jmsreply");
 			}
-			
+
 		});
 	}
 
