@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:broker="http://activemq.apache.org/schema/core" xmlns:jolokia="http://www.jolokia.org/jolokia-spring/schema/config"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd 
+    http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd
+    http://www.jolokia.org/jolokia-spring/schema/config http://www.jolokia.org/jolokia-spring/schema/config/jolokia-config.xsd">
+
+	<!-- bridge spring property placeholder with Camel -->
+	<!-- spring: ${property.key} -->
+	<!-- camel: {{property.key}} -->
+	<bean id="bridgePropertyPlaceholder"
+		class="org.apache.camel.spring.spi.BridgePropertyPlaceholderConfigurer">
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<value>classpath:application.default.properties</value>
+				<value>file:./application.properties</value>
+				<value>classpath:sql.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<context:component-scan base-package="ch.hsr.sa.eai" />
+	<context:annotation-config />
+
+	<broker:broker persistent="false" brokerName="myBroker">
+		<broker:transportConnectors>
+			<!-- expose a VM transport for in-JVM transport between AMQ and Camel 
+				on the server side -->
+			<broker:transportConnector name="vm"
+				uri="vm://myBroker" />
+		</broker:transportConnectors>
+	</broker:broker>
+
+	<bean id="jms" class="org.apache.activemq.camel.component.ActiveMQComponent">
+		<property name="brokerURL" value="vm://myBroker" />
+	</bean>
+
+	<bean id="metricRegistry" class="com.codahale.metrics.MetricRegistry" />
+
+	<bean id="metricsRoutePolicyFactory" 
+		class="org.apache.camel.component.metrics.routepolicy.MetricsRoutePolicyFactory">
+		<property name="metricsRegistry" ref="metricRegistry" />
+	</bean>
+
+
+	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+		<routeBuilder ref="apiRouteBuilder" />
+		
+		<restConfiguration component="jetty" host="0.0.0.0" port="12345" bindingMode="json_xml">
+<!-- 			<dataFormatProperty key="json.in.disableFeatures" value="FAIL_ON_UNKNOWN_PROPERTIES,ADJUST_DATES_TO_CONTEXT_TIME_ZONE"/> -->
+<!-- 			<dataFormatProperty key="json.in.enableFeatures" value="FAIL_ON_NUMBERS_FOR_ENUMS,USE_BIG_DECIMAL_FOR_FLOATS"/> -->
+		</restConfiguration>
+		
+	</camelContext>
+
+</beans>

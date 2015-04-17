@@ -2,6 +2,8 @@ package ch.hsr.sa.eai.sandbox.server.rest.api;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 @XmlRootElement(name = "jobResult")
 public class JobResult {
 
@@ -47,6 +49,17 @@ public class JobResult {
 
 	public String getDetails() {
 		return "[status=" + status + ", successfulRecords=" + successfulRecords + "]";
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof JobResult) {
+			final JobResult other = (JobResult) obj;
+			return new EqualsBuilder().append(jobName, other.jobName).append(status, other.status) //
+					.append(successfulRecords, other.successfulRecords).isEquals();
+		} else {
+			return false;
+		}
 	}
 
 }
