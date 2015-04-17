@@ -4,17 +4,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "jobResult")
 public class JobResult {
-	
+
 	public enum Status {
 		SCHEDULED, RUNNING, SUCCESSFUL, FAILED
 	}
-	
+
 	private String jobName;
 	private Status status;
-	
+	private Long successfulRecords = 0L;
+
 	public JobResult() {
 	}
-	
+
 	public JobResult(String jobName, Status status) {
 		this.jobName = jobName;
 		this.status = status;
@@ -34,6 +35,18 @@ public class JobResult {
 
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+
+	public Long getSuccessfulRecords() {
+		return successfulRecords;
+	}
+
+	public void setSuccessfulRecords(Long successfulRecords) {
+		this.successfulRecords = successfulRecords;
+	}
+
+	public String getDetails() {
+		return "[status=" + status + ", successfulRecords=" + successfulRecords + "]";
 	}
 
 }

@@ -1,16 +1,49 @@
 package ch.hsr.sa.eai.sandbox.server.rest;
 
+import java.util.Date;
+import java.util.List;
+
+import javax.management.InstanceNotFoundException;
+import javax.management.MBeanException;
+import javax.management.MalformedObjectNameException;
+import javax.management.ObjectName;
+import javax.management.ReflectionException;
+
+import org.apache.camel.CamelContext;
 import org.apache.camel.Header;
+import org.apache.camel.Route;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ch.hsr.sa.eai.sandbox.server.rest.api.JobResult;
-import ch.hsr.sa.eai.sandbox.server.rest.api.JobResult.Status;
+import com.codahale.metrics.MetricRegistry;
+
+import ch.hsr.sa.eai.sandbox.server.rest.api.JobStatus;
 
 @Component("restRouteStatus")
 public class RestRouteStatus {
 
-	public JobResult process(@Header("jobName") String jobName) {
-		return new JobResult(jobName, Status.SUCCESSFUL);
+	@Autowired
+	CamelContext context;
+
+	@Autowired
+	MetricRegistry metricRegistry;
+
+	@Autowired 
+	MetricHelper metricHelper;
+
+	public JobStatus process(@Header("jobName") String jobName) throws MalformedObjectNameException, InstanceNotFoundException, ReflectionException, MBeanException {
+		List<Route> routes = context.getRoutes();
+		Date lastSuccessfulRun = null;
+		
+		for (Route route : routes) {
+			if (route.getId().equals(jobName)) {
+				ObjectName objectName = context.getManagementStrategy().getManagementNamingStrategy().getObjectNameForRoute(route);
+				lastSuccessfulRun = (Date) context.getManagementStrategy().getManagementAgent().getMBeanServer().invoke(objectName, "getLastExchangeCompletedTimestamp", null, null);
+			}
+		}
+		
+		Long successfulRecords = metricHelper.getCounterValue(jobName, ".successful");
+		return new JobStatus(jobName, lastSuccessfulRun,successfulRecords);
 	}
-	
+
 }

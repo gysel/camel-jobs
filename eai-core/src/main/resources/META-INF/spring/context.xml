@@ -62,5 +62,12 @@
 				class="org.springframework.jmx.export.annotation.AnnotationJmxAttributeSource" />
 		</property>
 	</bean>
+	
+	<bean id="metricRegistry" class="com.codahale.metrics.MetricRegistry" />
+
+	<bean id="metricsRoutePolicyFactory" 
+		class="org.apache.camel.component.metrics.routepolicy.MetricsRoutePolicyFactory">
+		<property name="metricsRegistry" ref="metricRegistry" />
+	</bean>
 
 </beans>
