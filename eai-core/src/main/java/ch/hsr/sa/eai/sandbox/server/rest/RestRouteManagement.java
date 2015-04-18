@@ -23,11 +23,13 @@ public class RestRouteManagement {
 			Endpoint endpoint = route.getEndpoint();
 			String endpointUri = endpoint.getEndpointUri();
 			String jobName = route.getId();
-			String uri = (String) exchange.getIn().getHeader("CamelHttpUrl") + "/" + jobName;
+			String uri = (String) exchange.getIn().getHeader("CamelHttpUrl");
+			// add a slash if not provided by the incoming uri
+			uri = uri.endsWith("/") ? uri + jobName : uri + "/" + jobName;
 			if (endpointUri.startsWith(ROUTE_PREFIX)) {
-//				 jobName = endpointUri.replace(ROUTE_PREFIX, "");
+				// jobName = endpointUri.replace(ROUTE_PREFIX, "");
 				result.add(new Job(jobName, uri));
-			} else if(endpointUri.startsWith("file://")) {
+			} else if (endpointUri.startsWith("file://")) {
 				result.add(new Job(jobName, uri));
 			}
 		}
