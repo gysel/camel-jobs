@@ -14,7 +14,7 @@ import ch.hsr.sa.eai.sandbox.server.rest.api.JobResult.Status;
 @Component(value = "ch.hsr.sa.eai:name=JobManagement")
 @ManagedResource(description = "MBean for Route Management")
 public class JobManagement {
-	
+
 	@Autowired
 	JobManager jobManager;
 
@@ -23,7 +23,7 @@ public class JobManagement {
 	public int startJob(String jobName) {
 		JobResult result = jobManager.startJob(jobName);
 		int code = 0;
-		if(!Status.SUCCESSFUL.equals(result.getStatus())) {
+		if (!Status.SUCCESSFUL.equals(result.getStatus())) {
 			code = 1;
 		}
 		return code;

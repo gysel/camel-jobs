@@ -48,15 +48,12 @@ public class JmsRouteStarterTest extends AbstractJUnit4SpringContextTests {
 	@Before
 	public void setUp() throws Exception {
 		camelContext.addRoutes(new RouteBuilder() {
-
 			@Override
 			public void configure() throws Exception {
 				// dummy job to be started from JMS
 				from("vm:trigger-somejob").id(JOB_NAME).to("log:ch.hsr.sa.eai.sandbox.server.jms").end();
 				from("direct:send-jms").inOut("jms:JobTrigger").to("mock:jmsreply");
 			}
-
 		});
 	}
-
 }

@@ -1,10 +1,8 @@
 package ch.hsr.sa.eai.sandbox.server.jms;
 
 import javax.jms.JMSException;
-import javax.xml.bind.JAXBContext;
 
 import org.apache.camel.Header;
-import org.apache.camel.converter.jaxb.JaxbDataFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
