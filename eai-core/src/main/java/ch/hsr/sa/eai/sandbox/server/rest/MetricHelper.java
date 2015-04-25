@@ -19,8 +19,10 @@ public class MetricHelper {
 	public static final String IGNORED = ".ignored";
 	public static final String FAILED = ".failed";
 	public static final String SUCCESSFUL = ".successful";
+	public static final String REJECTED = ".rejected";
 
 	private Logger logger = LoggerFactory.getLogger(MetricHelper.class);
+
 
 	@Autowired
 	MetricRegistry metricRegistry;
@@ -55,10 +57,15 @@ public class MetricHelper {
 	public long getIgnoredRecords(String jobName) {
 		return getCounterValue(jobName, IGNORED);
 	}
+	
+	public long getRejectedRecords(String jobName) {
+		return getCounterValue(jobName, REJECTED);
+	}
 
 	public void update(JobStatus jobStatus) {
 		jobStatus.setSuccessfulRecords(getSuccessfulRecords(jobStatus.getJobName()));
 		jobStatus.setFailedRecords(getFailedRecords(jobStatus.getJobName()));
 		jobStatus.setIgnoredRecords(getIgnoredRecords(jobStatus.getJobName()));
+		jobStatus.setIgnoredRecords(getRejectedRecords(jobStatus.getJobName()));
 	}
 }

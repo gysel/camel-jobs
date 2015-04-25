@@ -28,7 +28,7 @@ public class RestRouteStatus {
 	@Autowired
 	MetricRegistry metricRegistry;
 
-	@Autowired 
+	@Autowired
 	MetricHelper metricHelper;
 
 	public JobStatus process(@Header("jobName") String jobName) throws MalformedObjectNameException, InstanceNotFoundException, ReflectionException, MBeanException {

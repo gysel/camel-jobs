@@ -12,6 +12,7 @@ public class JobStatus {
 	private Long successfulRecords = 0L;
 	private Long failedRecords = 0L;
 	private Long ignoredRecords = 0L;
+	private Long rejectedRecords = 0L;
 
 	public JobStatus() {
 	}
@@ -59,6 +60,14 @@ public class JobStatus {
 
 	public void setIgnoredRecords(Long ignoredRecords) {
 		this.ignoredRecords = ignoredRecords;
+	}
+
+	public Long getRejectedRecords() {
+		return rejectedRecords;
+	}
+
+	public void setRejectedRecords(Long rejectedRecords) {
+		this.rejectedRecords = rejectedRecords;
 	}
 
 }

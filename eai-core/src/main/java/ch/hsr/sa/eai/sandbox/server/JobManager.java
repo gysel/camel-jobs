@@ -22,19 +22,24 @@ public class JobManager {
 
 	@Autowired
 	MetricHelper metricHelper;
-	
+
 	private Logger logger = LoggerFactory.getLogger(JobManager.class);
 	private StopWatch sw;
 
 	public JobManager() {
 		sw = new StopWatch();
 	}
+
 	/**
 	 * start a job
 	 * @param jobName
-	 * @throws IllegalArgumentException when the job does not exist.
-	 * @throws IllegalArgumentException when a job is started that cannot be started by the JobManager.
-	 * @throws IllegalStateException when there is a problem with job naming.
+	 * @throws IllegalArgumentException
+	 *             when the job does not exist.
+	 * @throws IllegalArgumentException
+	 *             when a job is started that cannot be started by the
+	 *             JobManager.
+	 * @throws IllegalStateException
+	 *             when there is a problem with job naming.
 	 */
 	public JobResult startJob(String jobName) {
 		Status status = JobResult.Status.SUCCESSFUL;
@@ -50,7 +55,8 @@ public class JobManager {
 		if (route == null) {
 			throw new IllegalArgumentException("Job " + jobName + " not found.");
 		} else if (route.getEndpoint().getEndpointUri().startsWith("file://")) {
-			throw new IllegalArgumentException("Job " + jobName + " is based on a file poller and cannot be started manually.");
+			throw new IllegalArgumentException("Job " + jobName
+					+ " is based on a file poller and cannot be started manually.");
 		} else if (endpoint != null) {
 			sw.start();
 			logger.info("Starting job {}.", jobName);
