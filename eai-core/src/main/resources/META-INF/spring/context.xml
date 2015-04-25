@@ -4,11 +4,13 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camel="http://camel.apache.org/schema/spring"
 	xmlns:broker="http://activemq.apache.org/schema/core" xmlns:jolokia="http://www.jolokia.org/jolokia-spring/schema/config"
+	xmlns:cxf="http://camel.apache.org/schema/cxf"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 	http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context-3.0.xsd
     http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd 
     http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd
-    http://www.jolokia.org/jolokia-spring/schema/config http://www.jolokia.org/jolokia-spring/schema/config/jolokia-config.xsd">
+    http://www.jolokia.org/jolokia-spring/schema/config http://www.jolokia.org/jolokia-spring/schema/config/jolokia-config.xsd
+    http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd">
 
 	<!-- bridge spring property placeholder with Camel -->
 	<!-- spring: ${property.key} -->
@@ -70,4 +72,10 @@
 		<property name="metricsRegistry" ref="metricRegistry" />
 	</bean>
 
+	<cxf:cxfEndpoint id="jobsEndpoint" address="http://localhost:8081/EAIserver/jobs"
+		serviceClass="ch.hsr.sa.eai.sandbox.server.soap.JobService"
+		endpointName="ws:EaiJobsServicePort"
+		serviceName="ws:EaiJobsService"
+		xmlns:ws="http://ch.hsr.sa.eai.endpoint" />
+		<!-- wsdlURL="/META-INF/JobService.wsdl" -->
 </beans>
