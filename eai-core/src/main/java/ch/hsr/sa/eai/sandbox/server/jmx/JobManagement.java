@@ -7,7 +7,7 @@ import org.springframework.jmx.export.annotation.ManagedOperationParameters;
 import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.stereotype.Component;
 
-import ch.hsr.sa.eai.sandbox.server.JobManager;
+import ch.hsr.sa.eai.sandbox.server.JobFacade;
 import ch.hsr.sa.eai.sandbox.server.rest.api.JobResult;
 import ch.hsr.sa.eai.sandbox.server.rest.api.JobResult.Status;
 
@@ -16,7 +16,7 @@ import ch.hsr.sa.eai.sandbox.server.rest.api.JobResult.Status;
 public class JobManagement {
 
 	@Autowired
-	JobManager jobManager;
+	JobFacade jobManager;
 
 	@ManagedOperation(description = "start a route")
 	@ManagedOperationParameters({ @ManagedOperationParameter(name = "jobName", description = "The name of the job to start") })

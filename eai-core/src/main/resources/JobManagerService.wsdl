@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:tns="http://localhost:8081"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    targetNamespace="http://localhost:8081">
+ 
+    <!-- Type definitions for input- and output parameters for webservice -->
+    <wsdl:types>
+    <xs:schema targetNamespace="http://localhost:8081">
+            <xs:element name="inputJobManager">
+            </xs:element>
+            <xs:element name="outputJobManager">
+            </xs:element>
+        </xs:schema>
+    </wsdl:types>
+ 
+    <!-- Message definitions for input and output -->
+    <wsdl:message name="inputJobManager">
+        <wsdl:part name="parameters" element="tns:inputJobManager"/>
+    </wsdl:message>
+    <wsdl:message name="outputJobManager">
+        <wsdl:part name="parameters" element="tns:outputJobManager"/>
+    </wsdl:message>
+ 
+    <!-- Port (interface) definitions -->
+    <wsdl:portType name="JobManagerEndpoint">
+        <wsdl:operation name="GetJobs">
+            <wsdl:input message="tns:inputJobManager"/>
+            <wsdl:output message="tns:outputJobManager"/>
+        </wsdl:operation>
+    </wsdl:portType>
+ 
+    <!-- Port bindings to transports and encoding - HTTP, document literal encoding is used -->
+    <wsdl:binding name="JobManagerBinding" type="tns:JobManagerEndpoint">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="GetJobs">
+            <soap:operation
+                soapAction="http://localhost:8081/eaiserver"
+                style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="parameters" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+ 
+    <!-- Service definition -->
+    <wsdl:service name="JobManagerService">
+        <wsdl:port name="JobManagerPort" binding="tns:JobManagerBinding">
+            <soap:address location="http://localhost:8081"/>
+        </wsdl:port>
+    </wsdl:service>
+ 
+</wsdl:definitions>

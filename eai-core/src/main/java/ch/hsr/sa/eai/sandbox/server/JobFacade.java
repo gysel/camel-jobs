@@ -15,7 +15,7 @@ import ch.hsr.sa.eai.sandbox.server.rest.api.JobResult;
 import ch.hsr.sa.eai.sandbox.server.rest.api.JobResult.Status;
 
 @Component
-public class JobManager {
+public class JobFacade {
 
 	@Autowired
 	private ProducerTemplate template;
@@ -23,10 +23,10 @@ public class JobManager {
 	@Autowired
 	MetricHelper metricHelper;
 	
-	private Logger logger = LoggerFactory.getLogger(JobManager.class);
+	private Logger logger = LoggerFactory.getLogger(JobFacade.class);
 	private StopWatch sw;
 
-	public JobManager() {
+	public JobFacade() {
 		sw = new StopWatch();
 	}
 	/**

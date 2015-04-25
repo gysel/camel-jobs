@@ -6,17 +6,17 @@ import org.apache.camel.Header;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ch.hsr.sa.eai.sandbox.server.JobManager;
+import ch.hsr.sa.eai.sandbox.server.JobFacade;
 import ch.hsr.sa.eai.sandbox.server.rest.api.JobResult;
 
-@Component(value = "jmsRouteStarter")
+@Component("jmsRouteStarter")
 public class JmsRouteStarter {
 
 	@Autowired
-	JobManager jobManager;
+	JobFacade jobFacade;
 
 	public String process(@Header("JobName") String jobName) throws JMSException {
-		JobResult jobResult = jobManager.startJob(jobName);
+		JobResult jobResult = jobFacade.startJob(jobName);
 		return jobName + jobResult.getDetails();
 	}
 

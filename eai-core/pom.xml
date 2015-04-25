@@ -15,10 +15,13 @@
 		<apachemq-camel-version>5.11.1</apachemq-camel-version>
 		<logback-version>1.0.13</logback-version>
 		<jolokia-version>1.2.3</jolokia-version>
+		<cxf-version>3.0.4</cxf-version>
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
 	</properties>
 
+					
+	
 	<dependencies>
 
 		<dependency>
@@ -135,7 +138,7 @@
 		<dependency> <!-- use cxf with jetty -->
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-transports-http-jetty</artifactId>
-			<version>3.0.4</version>
+			<version>${cxf-version}</version>
 		</dependency>
 
 		<!-- logging -->
@@ -213,7 +216,63 @@
 					<target>${maven.compiler.target}</target>
 				</configuration>
 			</plugin>
+			<!-- CXF wsdl2java generator, will plugin to the compile goal -->
+			<plugin>
+			    <groupId>org.apache.cxf</groupId>
+			    <artifactId>cxf-codegen-plugin</artifactId>
+			    <version>${cxf-version}</version>
+			    <executions>
+			        <execution>
+			            <id>generate-sources</id>
+			            <phase>generate-sources</phase>
+			            <configuration>
+			                <sourceRoot>${basedir}/target/generated/src/main/java</sourceRoot>
+			                <wsdlOptions>
+			                    <wsdlOption>
+			                        <wsdl>${basedir}/src/main/resources/JobManagerService.wsdl</wsdl>
+			                    </wsdlOption>
+			                </wsdlOptions>
+			            </configuration>
+			            <goals>
+			                <goal>wsdl2java</goal>
+			            </goals>
+			        </execution>
+			    </executions>
+			</plugin>
+			<!-- <plugin>
+			    <groupId>org.apache.cxf</groupId>
+			    <artifactId>cxf-java2ws-plugin</artifactId>
+			    <version>${cxf-version}</version>
+			    <dependencies>
+			        <dependency>
+			            <groupId>org.apache.cxf</groupId>
+			            <artifactId>cxf-rt-frontend-jaxws</artifactId>
+			            <version>${cxf-version}</version>
+			        </dependency>
+			        <dependency>
+			            <groupId>org.apache.cxf</groupId>
+			            <artifactId>cxf-rt-frontend-simple</artifactId>
+			            <version>${cxf-version}</version>
+			        </dependency>
+			    </dependencies>
+			 
+			    <executions>
+			        <execution>
+			            <id>process-classes</id>
+			            <phase>process-classes</phase>
+			            <configuration>
+			                <className>ch.hsr.sa.eai.sandbox.server.soap.JobService</className>
+			                <genWsdl>true</genWsdl>
+			                <verbose>true</verbose>
+			               <address>http://localhost:8081/EAIserver</address>
+			            </configuration>
+			            <goals>
+			                <goal>java2ws</goal>
+			            </goals>
+			        </execution>
+			    </executions>
+			</plugin> -->
 		</plugins>
 	</build>
-
+	
 </project>

@@ -1,5 +1,6 @@
 package ch.hsr.sa.eai.sandbox.server.rest.api;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -9,7 +10,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 public class Jobs {
 	
-	private List<Job> jobs;
+	private List<Job> jobs = new ArrayList<>();
 	
 	public Jobs() {
 	}
