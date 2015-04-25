@@ -19,6 +19,15 @@
 		<route id="test">
 			<from uri="vm:trigger-test" />
 			<log message="test job running" />
+			<to uri="metrics:counter:test.successful" />
+			<to uri="metrics:counter:test.successful" />
+			<to uri="metrics:counter:test.failed" />
+			<to uri="metrics:counter:test.ignored" />
+		</route>
+		
+		<route id="timer-test">
+			<from uri="timer:test-trigger?period=10000" />
+			<to uri="vm:trigger-test" />
 		</route>
 
 	</camelContext>

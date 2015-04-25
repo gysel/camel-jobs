@@ -8,16 +8,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class JobStatus {
 
 	private String jobName;
-	private Long successfulRecords = 0L;
 	private Date lastSuccessfulRun;
+	private Long successfulRecords = 0L;
+	private Long failedRecords = 0L;
+	private Long ignoredRecords = 0L;
 
 	public JobStatus() {
 	}
 	
-	public JobStatus(String jobName, Date lastSuccessfulRun, Long successfulRecords) {
+	public JobStatus(String jobName, Date lastSuccessfulRun) {
 		this.jobName = jobName;
 		this.setLastSuccessfulRun(lastSuccessfulRun);
-		this.successfulRecords = successfulRecords;
 	}
 
 	public String getJobName() {
@@ -42,6 +43,22 @@ public class JobStatus {
 
 	public void setLastSuccessfulRun(Date lastSuccessfulRun) {
 		this.lastSuccessfulRun = lastSuccessfulRun;
+	}
+
+	public Long getFailedRecords() {
+		return failedRecords;
+	}
+
+	public void setFailedRecords(Long failedRecords) {
+		this.failedRecords = failedRecords;
+	}
+
+	public Long getIgnoredRecords() {
+		return ignoredRecords;
+	}
+
+	public void setIgnoredRecords(Long ignoredRecords) {
+		this.ignoredRecords = ignoredRecords;
 	}
 
 }

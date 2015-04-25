@@ -14,7 +14,7 @@ import ch.hsr.sa.eai.sandbox.server.rest.MetricHelper;
 import ch.hsr.sa.eai.sandbox.server.rest.api.JobResult;
 import ch.hsr.sa.eai.sandbox.server.rest.api.JobResult.Status;
 
-@Component
+@Component("jobManager")
 public class JobManager {
 
 	@Autowired
@@ -38,7 +38,9 @@ public class JobManager {
 	 */
 	public JobResult startJob(String jobName) {
 		Status status = JobResult.Status.SUCCESSFUL;
-		long countBefore = metricHelper.getCounterValue(jobName, ".successful");
+		long countSuccessfulBefore = metricHelper.getSuccessfulRecords(jobName);
+		long countFailedBefore = metricHelper.getFailedRecords(jobName);
+		long countIgnoredBefore = metricHelper.getIgnoredRecords(jobName);
 
 		String endpointUri = "vm:trigger-" + jobName;
 		Endpoint endpoint = template.getCamelContext().hasEndpoint(endpointUri);
@@ -65,8 +67,12 @@ public class JobManager {
 		}
 
 		JobResult jobResult = new JobResult(jobName, status);
-		long successfulRecords = metricHelper.getCounterValue(jobName, ".successful") - countBefore;
+		long successfulRecords = metricHelper.getSuccessfulRecords(jobName) - countSuccessfulBefore;
+		long ignoredRecords = metricHelper.getIgnoredRecords(jobName) - countIgnoredBefore;
+		long failedRecords = metricHelper.getFailedRecords(jobName) - countFailedBefore;
 		jobResult.setSuccessfulRecords(successfulRecords);
+		jobResult.setFailedRecords(failedRecords);
+		jobResult.setIgnoredRecords(ignoredRecords);
 
 		logger.info("Job {} finished in {}ms. {}", jobName, sw.getLastTaskTimeMillis(), jobResult.getDetails());
 

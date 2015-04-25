@@ -14,6 +14,8 @@ public class JobResult {
 	private String jobName;
 	private Status status;
 	private Long successfulRecords = 0L;
+	private Long failedRecords = 0L;
+	private Long ignoredRecords = 0L;
 
 	public JobResult() {
 	}
@@ -48,7 +50,7 @@ public class JobResult {
 	}
 
 	public String getDetails() {
-		return "[status=" + status + ", successfulRecords=" + successfulRecords + "]";
+		return "[status=" + status + ", successful=" + successfulRecords + ", ignored=" + ignoredRecords + ", failed=" + failedRecords + "]";
 	}
 
 	@Override
@@ -60,6 +62,22 @@ public class JobResult {
 		} else {
 			return false;
 		}
+	}
+
+	public Long getFailedRecords() {
+		return failedRecords;
+	}
+
+	public void setFailedRecords(Long failedRecords) {
+		this.failedRecords = failedRecords;
+	}
+
+	public Long getIgnoredRecords() {
+		return ignoredRecords;
+	}
+
+	public void setIgnoredRecords(Long ignoredRecords) {
+		this.ignoredRecords = ignoredRecords;
 	}
 
 }

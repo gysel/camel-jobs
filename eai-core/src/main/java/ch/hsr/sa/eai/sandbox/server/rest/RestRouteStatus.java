@@ -42,8 +42,9 @@ public class RestRouteStatus {
 			}
 		}
 		
-		Long successfulRecords = metricHelper.getCounterValue(jobName, ".successful");
-		return new JobStatus(jobName, lastSuccessfulRun,successfulRecords);
+		JobStatus jobStatus = new JobStatus(jobName, lastSuccessfulRun);
+		metricHelper.update(jobStatus);
+		return jobStatus;
 	}
 
 }
