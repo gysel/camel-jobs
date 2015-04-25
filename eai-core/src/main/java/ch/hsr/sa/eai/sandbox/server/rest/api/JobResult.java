@@ -55,7 +55,7 @@ public class JobResult {
 	public boolean equals(Object obj) {
 		if (obj instanceof JobResult) {
 			final JobResult other = (JobResult) obj;
-			return new EqualsBuilder().append(jobName, other.jobName).append(status, other.status) //
+			return new EqualsBuilder().append(jobName, other.jobName).append(status, other.status)
 					.append(successfulRecords, other.successfulRecords).isEquals();
 		} else {
 			return false;
