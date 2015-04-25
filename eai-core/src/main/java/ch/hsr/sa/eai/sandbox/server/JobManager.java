@@ -22,23 +22,30 @@ public class JobManager {
 
 	@Autowired
 	MetricHelper metricHelper;
-	
+
 	private Logger logger = LoggerFactory.getLogger(JobManager.class);
 	private StopWatch sw;
 
 	public JobManager() {
 		sw = new StopWatch();
 	}
+
 	/**
 	 * start a job
+	 * 
 	 * @param jobName
-	 * @throws IllegalArgumentException when the job does not exist.
-	 * @throws IllegalArgumentException when a job is started that cannot be started by the JobManager.
-	 * @throws IllegalStateException when there is a problem with job naming.
+	 * @throws IllegalArgumentException
+	 *             when the job does not exist.
+	 * @throws IllegalArgumentException
+	 *             when a job is started that cannot be started by the
+	 *             JobManager.
+	 * @throws IllegalStateException
+	 *             when there is a problem with job naming.
 	 */
 	public JobResult startJob(String jobName) {
 		Status status = JobResult.Status.SUCCESSFUL;
-		long countBefore = metricHelper.getCounterValue(jobName, ".successful");
+		long countBeforeSuccessful = metricHelper.getCounterValue(jobName, MetricHelper.COUNTER_NAME_SUCCESSFUL);
+		long countBeforeRejcted = metricHelper.getCounterValue(jobName, MetricHelper.COUNTER_NAME_REJECTED);
 
 		String endpointUri = "vm:trigger-" + jobName;
 		Endpoint endpoint = template.getCamelContext().hasEndpoint(endpointUri);
@@ -48,7 +55,8 @@ public class JobManager {
 		if (route == null) {
 			throw new IllegalArgumentException("Job " + jobName + " not found.");
 		} else if (route.getEndpoint().getEndpointUri().startsWith("file://")) {
-			throw new IllegalArgumentException("Job " + jobName + " is based on a file poller and cannot be started manually.");
+			throw new IllegalArgumentException("Job " + jobName
+					+ " is based on a file poller and cannot be started manually.");
 		} else if (endpoint != null) {
 			sw.start();
 			logger.info("Starting job {}.", jobName);
@@ -65,8 +73,12 @@ public class JobManager {
 		}
 
 		JobResult jobResult = new JobResult(jobName, status);
-		long successfulRecords = metricHelper.getCounterValue(jobName, ".successful") - countBefore;
+		long successfulRecords = metricHelper.getCounterValue(jobName, MetricHelper.COUNTER_NAME_SUCCESSFUL)
+				- countBeforeSuccessful;
+		long rejectedRecords = metricHelper.getCounterValue(jobName, MetricHelper.COUNTER_NAME_REJECTED)
+				- countBeforeRejcted;
 		jobResult.setSuccessfulRecords(successfulRecords);
+		jobResult.setRejectedRecords(rejectedRecords);
 
 		logger.info("Job {} finished in {}ms. {}", jobName, sw.getLastTaskTimeMillis(), jobResult.getDetails());
 

@@ -11,6 +11,9 @@ import com.codahale.metrics.MetricRegistry;
 @Component
 public class MetricHelper {
 
+	public static final String COUNTER_NAME_SUCCESSFUL = ".successful";
+	public static final String COUNTER_NAME_REJECTED = ".rejected";
+
 	@Autowired
 	MetricRegistry metricRegistry;
 

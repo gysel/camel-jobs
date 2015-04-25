@@ -10,12 +10,14 @@ public class JobStatus {
 	private String jobName;
 	private Long successfulRecords = 0L;
 	private Date lastSuccessfulRun;
+	private Long rejectedRecords;
 
 	public JobStatus() {
 	}
-	
-	public JobStatus(String jobName, Date lastSuccessfulRun, Long successfulRecords) {
+
+	public JobStatus(String jobName, Date lastSuccessfulRun, Long successfulRecords, Long rejectedRecords) {
 		this.jobName = jobName;
+		this.rejectedRecords = rejectedRecords;
 		this.setLastSuccessfulRun(lastSuccessfulRun);
 		this.successfulRecords = successfulRecords;
 	}
@@ -34,6 +36,14 @@ public class JobStatus {
 
 	public void setSuccessfulRecords(Long successfulRecords) {
 		this.successfulRecords = successfulRecords;
+	}
+
+	public Long getRejectedRecords() {
+		return rejectedRecords;
+	}
+
+	public void setRejectedRecords(Long rejectedRecords) {
+		this.rejectedRecords = rejectedRecords;
 	}
 
 	public Date getLastSuccessfulRun() {
