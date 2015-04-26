@@ -8,7 +8,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 public class JobResult {
 
 	public enum Status {
-		SCHEDULED, RUNNING, SUCCESSFUL, FAILED
+		SCHEDULED, RUNNING, SUCCESSFUL, FAILED, ROLLED_BACK
 	}
 
 	private String jobName;
