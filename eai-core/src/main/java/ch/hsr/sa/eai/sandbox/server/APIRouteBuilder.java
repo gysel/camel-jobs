@@ -17,6 +17,9 @@ public class APIRouteBuilder extends RouteBuilder {
 		rest("/jobs/{name}").post().outType(JobResult.class).to("restRouteStarter");
 		// the parameter name is different intentionally. camel does not allow two rest routes with the exact same uri.
 		from("jms:JobTrigger?exchangePattern=InOut").beanRef("jmsRouteStarter");
+		from("quartz2://resetMetricsTimer?cron={{metrics.reset.cron}}")
+			.to("bean:metricHelper?method=resetMetrics");
+
 	}
 
 }

@@ -14,6 +14,8 @@ public class JobResult {
 	private String jobName;
 	private Status status;
 	private Long successfulRecords = 0L;
+	private Long failedRecords = 0L;
+	private Long ignoredRecords = 0L;
 	private Long rejectedRecords = 0L;
 
 	public JobResult() {
@@ -48,17 +50,8 @@ public class JobResult {
 		this.successfulRecords = successfulRecords;
 	}
 
-	public Long getRejectedRecords() {
-		return rejectedRecords;
-	}
-
-	public void setRejectedRecords(Long rejectedRecords) {
-		this.rejectedRecords = rejectedRecords;
-	}
-
 	public String getDetails() {
-		return "[status=" + status + ", successfulRecords=" + successfulRecords + ", rejectedRecords="
-				+ rejectedRecords + "]";
+		return "[status=" + status + ", successful=" + successfulRecords + ", ignored=" + ignoredRecords + ", failed=" + failedRecords + ", rejected=" + rejectedRecords +"]";
 	}
 
 	@Override
@@ -67,10 +60,26 @@ public class JobResult {
 			final JobResult other = (JobResult) obj;
 			return new EqualsBuilder().append(jobName, other.jobName).append(status, other.status)
 					.append(successfulRecords, other.successfulRecords).append(rejectedRecords, other.rejectedRecords)
-					.isEquals();
+					.append(ignoredRecords, other.ignoredRecords).append(failedRecords, other.failedRecords).isEquals();
 		} else {
 			return false;
 		}
+	}
+
+	public Long getFailedRecords() {
+		return failedRecords;
+	}
+
+	public void setFailedRecords(Long failedRecords) {
+		this.failedRecords = failedRecords;
+	}
+
+	public Long getIgnoredRecords() {
+		return ignoredRecords;
+	}
+
+	public void setIgnoredRecords(Long ignoredRecords) {
+		this.ignoredRecords = ignoredRecords;
 	}
 
 }

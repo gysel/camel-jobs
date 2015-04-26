@@ -17,7 +17,7 @@ import ch.hsr.sa.eai.sandbox.server.rest.MetricHelper;
 import ch.hsr.sa.eai.sandbox.server.rest.api.JobResult;
 import ch.hsr.sa.eai.sandbox.server.rest.api.JobResult.Status;
 
-@Component
+@Component("jobManager")
 public class JobManager {
 
 	@Autowired
@@ -35,7 +35,6 @@ public class JobManager {
 
 	/**
 	 * start a job
-	 * 
 	 * @param jobName
 	 * @throws IllegalArgumentException
 	 *             when the job does not exist.
@@ -47,8 +46,9 @@ public class JobManager {
 	 */
 	public JobResult startJob(String jobName) {
 		Status status = JobResult.Status.SUCCESSFUL;
-		long countBeforeSuccessful = metricHelper.getCounterValue(jobName, MetricHelper.COUNTER_NAME_SUCCESSFUL);
-		long countBeforeRejcted = metricHelper.getCounterValue(jobName, MetricHelper.COUNTER_NAME_REJECTED);
+		long countSuccessfulBefore = metricHelper.getSuccessfulRecords(jobName);
+		long countFailedBefore = metricHelper.getFailedRecords(jobName);
+		long countIgnoredBefore = metricHelper.getIgnoredRecords(jobName);
 
 		String endpointUri = "vm:trigger-" + jobName;
 		SedaEndpoint endpoint = (SedaEndpoint) template.getCamelContext().hasEndpoint(endpointUri);
@@ -86,12 +86,12 @@ public class JobManager {
 		}
 
 		JobResult jobResult = new JobResult(jobName, status);
-		long successfulRecords = metricHelper.getCounterValue(jobName, MetricHelper.COUNTER_NAME_SUCCESSFUL)
-				- countBeforeSuccessful;
-		long rejectedRecords = metricHelper.getCounterValue(jobName, MetricHelper.COUNTER_NAME_REJECTED)
-				- countBeforeRejcted;
+		long successfulRecords = metricHelper.getSuccessfulRecords(jobName) - countSuccessfulBefore;
+		long ignoredRecords = metricHelper.getIgnoredRecords(jobName) - countIgnoredBefore;
+		long failedRecords = metricHelper.getFailedRecords(jobName) - countFailedBefore;
 		jobResult.setSuccessfulRecords(successfulRecords);
-		jobResult.setRejectedRecords(rejectedRecords);
+		jobResult.setFailedRecords(failedRecords);
+		jobResult.setIgnoredRecords(ignoredRecords);
 
 		logger.info("Job {} finished in {}ms. {}", jobName, sw.getLastTaskTimeMillis(), jobResult.getDetails());
 

@@ -8,18 +8,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class JobStatus {
 
 	private String jobName;
-	private Long successfulRecords = 0L;
 	private Date lastSuccessfulRun;
-	private Long rejectedRecords;
+	private Long successfulRecords = 0L;
+	private Long failedRecords = 0L;
+	private Long ignoredRecords = 0L;
+	private Long rejectedRecords = 0L;
 
 	public JobStatus() {
 	}
-
-	public JobStatus(String jobName, Date lastSuccessfulRun, Long successfulRecords, Long rejectedRecords) {
+	
+	public JobStatus(String jobName, Date lastSuccessfulRun) {
 		this.jobName = jobName;
-		this.rejectedRecords = rejectedRecords;
 		this.setLastSuccessfulRun(lastSuccessfulRun);
-		this.successfulRecords = successfulRecords;
 	}
 
 	public String getJobName() {
@@ -38,20 +38,36 @@ public class JobStatus {
 		this.successfulRecords = successfulRecords;
 	}
 
-	public Long getRejectedRecords() {
-		return rejectedRecords;
-	}
-
-	public void setRejectedRecords(Long rejectedRecords) {
-		this.rejectedRecords = rejectedRecords;
-	}
-
 	public Date getLastSuccessfulRun() {
 		return lastSuccessfulRun;
 	}
 
 	public void setLastSuccessfulRun(Date lastSuccessfulRun) {
 		this.lastSuccessfulRun = lastSuccessfulRun;
+	}
+
+	public Long getFailedRecords() {
+		return failedRecords;
+	}
+
+	public void setFailedRecords(Long failedRecords) {
+		this.failedRecords = failedRecords;
+	}
+
+	public Long getIgnoredRecords() {
+		return ignoredRecords;
+	}
+
+	public void setIgnoredRecords(Long ignoredRecords) {
+		this.ignoredRecords = ignoredRecords;
+	}
+
+	public Long getRejectedRecords() {
+		return rejectedRecords;
+	}
+
+	public void setRejectedRecords(Long rejectedRecords) {
+		this.rejectedRecords = rejectedRecords;
 	}
 
 }
