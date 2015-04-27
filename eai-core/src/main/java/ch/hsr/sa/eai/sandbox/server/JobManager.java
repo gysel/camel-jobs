@@ -1,7 +1,5 @@
 package ch.hsr.sa.eai.sandbox.server;
 
-import java.util.concurrent.Future;
-
 import org.apache.camel.CamelExecutionException;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.Route;
@@ -35,6 +33,7 @@ public class JobManager {
 
 	/**
 	 * start a job
+	 * 
 	 * @param jobName
 	 * @throws IllegalArgumentException
 	 *             when the job does not exist.
@@ -67,9 +66,7 @@ public class JobManager {
 			sw.start();
 			logger.info("Starting job {}.", jobName);
 			try {
-
-				Future<Object> future = template.asyncRequestBody(endpoint, (Object) null);
-				Object result = template.extractFutureBody(future, Object.class);
+				template.requestBody(endpoint, (Object) null);
 			} catch (CamelExecutionException e) {
 				logger.error("Job {} failed.", jobName, e);
 				if (e.getCause() instanceof UnexpectedRollbackException) {
