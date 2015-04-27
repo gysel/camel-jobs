@@ -13,17 +13,28 @@ public class JobResult {
 
 	private String jobName;
 	private Status status;
+	/**
+	 * Successfully integrated records
+	 */
 	private Long successfulRecords = 0L;
+	/**
+	 * Failed records, an exception or other problem has occurred
+	 */
 	private Long failedRecords = 0L;
 	private Long ignoredRecords = 0L;
+	/**
+	 * Rejected as the record contained unwanted content or attributes
+	 */
 	private Long rejectedRecords = 0L;
+	private String executionId;
 
-	public JobResult() {
-	}
-
-	public JobResult(String jobName, Status status) {
+	public JobResult(String jobName, Status status, String executionId) {
 		this.jobName = jobName;
 		this.status = status;
+		this.executionId = executionId;
+	}
+
+	public JobResult() {
 	}
 
 	public String getJobName() {
@@ -42,6 +53,14 @@ public class JobResult {
 		this.status = status;
 	}
 
+	public String getExecutionId() {
+		return executionId;
+	}
+
+	public void setExecutionId(String executionId) {
+		this.executionId = executionId;
+	}
+
 	public Long getSuccessfulRecords() {
 		return successfulRecords;
 	}
@@ -51,7 +70,8 @@ public class JobResult {
 	}
 
 	public String getDetails() {
-		return "[status=" + status + ", successful=" + successfulRecords + ", ignored=" + ignoredRecords + ", failed=" + failedRecords + ", rejected=" + rejectedRecords +"]";
+		return "[status=" + status + ", successful=" + successfulRecords + ", ignored=" + ignoredRecords + ", failed="
+				+ failedRecords + ", rejected=" + rejectedRecords + ", executionId=" + executionId + "]";
 	}
 
 	@Override
@@ -60,10 +80,19 @@ public class JobResult {
 			final JobResult other = (JobResult) obj;
 			return new EqualsBuilder().append(jobName, other.jobName).append(status, other.status)
 					.append(successfulRecords, other.successfulRecords).append(rejectedRecords, other.rejectedRecords)
-					.append(ignoredRecords, other.ignoredRecords).append(failedRecords, other.failedRecords).isEquals();
+					.append(ignoredRecords, other.ignoredRecords).append(failedRecords, other.failedRecords)
+					.append(executionId, other.executionId).isEquals();
 		} else {
 			return false;
 		}
+	}
+
+	public Long getRejectedRecords() {
+		return rejectedRecords;
+	}
+
+	public void setRejectedRecords(Long rejectedRecords) {
+		this.rejectedRecords = rejectedRecords;
 	}
 
 	public Long getFailedRecords() {
