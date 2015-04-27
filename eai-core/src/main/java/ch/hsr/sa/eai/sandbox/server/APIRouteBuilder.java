@@ -12,13 +12,14 @@ public class APIRouteBuilder extends RouteBuilder {
 
 	@Override
 	public void configure() throws Exception {
-		rest("/jobs").get().outType(Jobs.class).to("restRouteManagement");
-		rest("/jobs/{jobName}").get().outType(JobStatus.class).to("restRouteStatus");
-		rest("/jobs/{name}").post().outType(JobResult.class).to("restRouteStarter");
-		// the parameter name is different intentionally. camel does not allow two rest routes with the exact same uri.
-		from("jms:JobTrigger?exchangePattern=InOut").beanRef("jmsRouteStarter");
-		from("quartz2://resetMetricsTimer?cron={{metrics.reset.cron}}")
-			.to("bean:metricHelper?method=resetMetrics");
+		rest("/jobs").id("restRouteOverview").get().outType(Jobs.class).to("restRouteManagement");
+		rest("/jobs/{jobName}").id("restRouteJobInfo").get().outType(JobStatus.class).to("restRouteStatus");
+		rest("/jobs/{name}").id("restRouteStartJob").post().outType(JobResult.class).to("restRouteStarter");
+		// the parameter name is different intentionally. camel does not allow
+		// two rest routes with the exact same uri.
+		from("jms:JobTrigger?exchangePattern=InOut").id("jmsRouteStarter").beanRef("jmsRouteStarter");
+		from("quartz2://resetMetricsTimer?cron={{metrics.reset.cron}}").id("resetMetrics").to(
+				"bean:metricHelper?method=resetMetrics");
 
 	}
 
