@@ -62,6 +62,8 @@
 		<property name="autodetect" value="true" />
 		<property name="assembler" ref="assembler" />
 	</bean>
+	
+	<bean id="exceptionAggregatorStrategy" class="ch.hsr.sa.eai.sandbox.server.errorhandling.ExceptionAggregationStrategy" />
 
 	<bean id="assembler"
 		class="org.springframework.jmx.export.assembler.MetadataMBeanInfoAssembler">

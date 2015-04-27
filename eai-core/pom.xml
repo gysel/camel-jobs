@@ -99,6 +99,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-mail</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-jaxb</artifactId>
 			<version>${camel-version}</version>
 		</dependency>
@@ -158,12 +163,12 @@
 			<exclusions>
 				<!-- excluding tools .jar as it causes conflicts in eclipse -->
 				<!-- TODO document requirement: must be run with a JDK (is this really 
-					true?) --> 
+					true?) -->
 				<exclusion>
 					<artifactId>tools</artifactId>
 					<groupId>com.sun</groupId>
 				</exclusion>
-				
+
 			</exclusions>
 		</dependency>
 
