@@ -38,7 +38,8 @@ public class JmsRouteStarterTest extends AbstractJUnit4SpringContextTests {
 		expectedResult.setStatus(Status.SUCCESSFUL);
 
 		resultEndpoint.expectedMessageCount(1);
-		resultEndpoint.expectedBodiesReceived(JOB_NAME + expectedResult.getDetails());
+		String expectedBody = JOB_NAME + "[status=" + Status.SUCCESSFUL;
+		resultEndpoint.expectedBodyReceived().body().startsWith(expectedBody);
 
 		template.sendBodyAndHeader(null, "JobName", JOB_NAME);
 

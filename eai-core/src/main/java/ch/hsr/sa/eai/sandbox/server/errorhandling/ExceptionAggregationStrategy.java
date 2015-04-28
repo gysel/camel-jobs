@@ -7,7 +7,7 @@ public class ExceptionAggregationStrategy implements AggregationStrategy {
 
 	@Override
 	public Exchange aggregate(Exchange oldExchange, Exchange newExchange) {
-		Object executionId = newExchange.getIn().getHeader("executionId");
+		Object executionId = newExchange.getIn().getHeader("ExecutionId");
 		newExchange.getIn().setBody(
 				"Processing failure in integration job " + executionId
 						+ ", please check the failure file failedRecords/" + executionId);

@@ -53,6 +53,7 @@ public class JobManager {
 
 		String endpointUri = "vm:trigger-" + jobName;
 		SedaEndpoint endpoint = (SedaEndpoint) template.getCamelContext().hasEndpoint(endpointUri);
+		// TODO instanceof check!
 
 		Route route = template.getCamelContext().getRoute(jobName);
 
@@ -100,7 +101,7 @@ public class JobManager {
 
 	private String getExecutionId(Exchange result) {
 		if (result.getOut() != null) {
-			Object executionIdHeader = result.getOut().getHeader("executionId");
+			Object executionIdHeader = result.getOut().getHeader("ExecutionId");
 			if (executionIdHeader != null) {
 				return executionIdHeader.toString();
 			}
