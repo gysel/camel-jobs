@@ -48,10 +48,6 @@
 		<property name="brokerURL" value="vm://myBroker" />
 	</bean>
 
-	<!-- 
-	<bean id="hawtio" class="ch.hsr.sa.eai.monitoring.Hawtio" init-method="startHawtio"/>
--->
-
 	<jolokia:agent lookupConfig="false" systemPropertiesMode="never">
 		<jolokia:config autoStart="true" host="0.0.0.0" port="8778" />
 	</jolokia:agent>
@@ -64,7 +60,8 @@
 	</bean>
 	
 	<bean id="exceptionAggregatorStrategy" class="ch.hsr.sa.eai.sandbox.server.errorhandling.ExceptionAggregationStrategy" />
-
+	
+	
 	<bean id="assembler"
 		class="org.springframework.jmx.export.assembler.MetadataMBeanInfoAssembler">
 		<property name="attributeSource">
