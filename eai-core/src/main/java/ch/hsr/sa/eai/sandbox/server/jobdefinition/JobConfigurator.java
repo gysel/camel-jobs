@@ -14,14 +14,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextStartedEvent;
+import org.springframework.context.event.ContextRefreshedEvent;
 
 import ch.hsr.sa.eai.sandbox.server.errorhandling.ExceptionAggregationStrategy;
 
-public class JobConfigurator implements ApplicationListener<ContextStartedEvent>, CamelContextAware {
+public class JobConfigurator implements ApplicationListener<ContextRefreshedEvent>, CamelContextAware {
 
 	// use ModelCamelContext, CamelContext.getRouteDefinitions() is deprecated
 	private ModelCamelContext camelContext;
+	private boolean initiated = false;
 
 	@Autowired
 	private JobConfiguration config;
@@ -29,7 +30,19 @@ public class JobConfigurator implements ApplicationListener<ContextStartedEvent>
 	private Logger logger = LoggerFactory.getLogger(JobConfigurator.class);
 
 	@Override
-	public void onApplicationEvent(ContextStartedEvent event) {
+	public void onApplicationEvent(ContextRefreshedEvent event) {
+		// ContextStartedEvent is not always fired, so ContextRefreshedEvent. Initiated makes sure the routes are
+		// adviced only once
+		if (initiated) {
+			return;
+		}
+		logger.info("ContextStartedEvent received, advice routes with configuration");
+		initiated = true;
+		adviceRoutes();
+
+	}
+
+	private void adviceRoutes() {
 		for (RouteDefinition route : getListOfJobs()) {
 			// note: adviceWith should only be called once per route! http://camel.apache.org/advicewith.html
 			adviceRoute(route);
@@ -40,7 +53,6 @@ public class JobConfigurator implements ApplicationListener<ContextStartedEvent>
 		} catch (Exception e) {
 			logger.error("could not start camel routes", e);
 		}
-
 	}
 
 	private void adviceRoute(RouteDefinition route) {
