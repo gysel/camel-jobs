@@ -10,26 +10,26 @@ import org.springframework.stereotype.Component;
 @Component("listAggregationStrategy")
 public class ArrayListAggregationStrategy implements AggregationStrategy {
 
-    public ArrayListAggregationStrategy() {
-            super();
-    }
+	public ArrayListAggregationStrategy() {
+		super();
+	}
 
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public Exchange aggregate(Exchange oldExchange, Exchange newExchange) {
-            Message newIn = newExchange.getIn();
-            Object newBody = newIn.getBody();
-            ArrayList<Object> list = null;
-            if (oldExchange == null) {
-                    list = new ArrayList<Object>();
-                    list.add(newBody);
-                    newIn.setBody(list);
-                    return newExchange;
-            } else {
-                    Message in = oldExchange.getIn();
-                    list = in.getBody(ArrayList.class);
-                    list.add(newBody);
-                    return oldExchange;
-            }
-    }
+		Message newIn = newExchange.getIn();
+		Object newBody = newIn.getBody();
+		ArrayList<Object> list = null;
+		if (oldExchange == null) {
+			list = new ArrayList<Object>();
+			list.add(newBody);
+			newIn.setBody(list);
+			return newExchange;
+		} else {
+			Message in = oldExchange.getIn();
+			list = in.getBody(ArrayList.class);
+			list.add(newBody);
+			return oldExchange;
+		}
+	}
 
 }
