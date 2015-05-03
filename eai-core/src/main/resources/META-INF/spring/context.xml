@@ -56,6 +56,12 @@
 		<property name="assembler" ref="assembler" />
 	</bean>
 	
+<<<<<<< HEAD
+=======
+	<bean id="exceptionAggregatorStrategy" class="ch.hsr.sa.eai.sandbox.server.errorhandling.ExceptionAggregationStrategy" />
+	
+	
+>>>>>>> branch 'master' of git@github.com:gysel/hsr-sa-eai-code.git
 	<bean id="assembler"
 		class="org.springframework.jmx.export.assembler.MetadataMBeanInfoAssembler">
 		<property name="attributeSource">
