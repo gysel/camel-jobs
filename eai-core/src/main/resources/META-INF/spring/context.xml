@@ -29,9 +29,6 @@
 		</property>
 	</bean>
 
-	<context:component-scan base-package="ch.hsr.sa.eai" />
-	<context:annotation-config />
-
 	<broker:broker persistent="false" brokerName="myBroker">
 		<broker:transportConnectors>
 			<!-- expose a VM transport for in-JVM transport between AMQ and Camel 
@@ -48,10 +45,6 @@
 		<property name="brokerURL" value="vm://myBroker" />
 	</bean>
 
-	<!-- 
-	<bean id="hawtio" class="ch.hsr.sa.eai.monitoring.Hawtio" init-method="startHawtio"/>
--->
-
 	<jolokia:agent lookupConfig="false" systemPropertiesMode="never">
 		<jolokia:config autoStart="true" host="0.0.0.0" port="8778" />
 	</jolokia:agent>
@@ -63,8 +56,6 @@
 		<property name="assembler" ref="assembler" />
 	</bean>
 	
-	<bean id="exceptionAggregatorStrategy" class="ch.hsr.sa.eai.sandbox.server.errorhandling.ExceptionAggregationStrategy" />
-
 	<bean id="assembler"
 		class="org.springframework.jmx.export.assembler.MetadataMBeanInfoAssembler">
 		<property name="attributeSource">
@@ -73,11 +64,4 @@
 		</property>
 	</bean>
 	
-	<bean id="metricRegistry" class="com.codahale.metrics.MetricRegistry" />
-
-	<bean id="metricsRoutePolicyFactory" 
-		class="org.apache.camel.component.metrics.routepolicy.MetricsRoutePolicyFactory">
-		<property name="metricsRegistry" ref="metricRegistry" />
-	</bean>
-
 </beans>

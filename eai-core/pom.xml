@@ -204,7 +204,6 @@
 		</dependency>
 	</dependencies>
 
-
 	<build>
 		<finalName>eai-core</finalName>
 		<plugins>
