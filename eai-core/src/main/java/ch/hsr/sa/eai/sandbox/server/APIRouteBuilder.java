@@ -4,7 +4,6 @@ import java.util.Properties;
 
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import ch.hsr.sa.eai.sandbox.server.rest.api.JobResult;

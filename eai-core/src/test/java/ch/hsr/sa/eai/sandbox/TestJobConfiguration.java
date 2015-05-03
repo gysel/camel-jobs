@@ -9,4 +9,9 @@ public class TestJobConfiguration implements JobConfiguration {
 		return "user@server:25?password=password";
 	}
 
+	@Override
+	public boolean shouldSendEmails() {
+		return true;
+	}
+
 }
