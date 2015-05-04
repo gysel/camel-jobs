@@ -7,14 +7,27 @@
     http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring-2.14.0.xsd">
 
 
-	<bean id="jobConfiguration" class="ch.hsr.sa.eai.sandbox.TestJobConfiguration" />
+	<bean id="exceptionGeneratingProcesser" class="ch.hsr.sa.eai.sandbox.ExceptionGeneratingProcessor" />
+
+
+	<bean id="jobConfiguration" class="ch.hsr.sa.eai.sandbox.server.jobdefinition.EmptyJobConfiguration" />
 	<bean id="jobConfigurator" class="ch.hsr.sa.eai.sandbox.server.jobdefinition.JobConfigurator" />
 
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring" autoStartup="false">
 
+
 		<route id="job-configurator-testroute">
-			<from uri="direct:start" />
+			<from uri="direct:start" />		
 			<to uri="mock:result" />
+		</route>
+		
+		<route id="job-configurator-testroute-exception">
+			<from uri="direct:start-exception" />
+			<split>
+			   <simple>${body}</simple>
+				<to uri="exceptionGeneratingProcesser" /> <!--  generates an exception -->
+			</split>
+		   <to uri="mock:result"/>
 		</route>
 
 	</camelContext>
