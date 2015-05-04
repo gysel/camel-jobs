@@ -1,9 +1,9 @@
 package ch.hsr.sa.eai.sandbox.server;
 
-import java.util.Properties;
-
 import org.apache.camel.builder.RouteBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import ch.hsr.sa.eai.sandbox.server.rest.api.JobResult;
@@ -12,13 +12,15 @@ import ch.hsr.sa.eai.sandbox.server.rest.api.Jobs;
 
 @Component("apiRouteBuilder")
 public class APIRouteBuilder extends RouteBuilder {
-	
-	@Autowired
-	private Properties properties;
+
+	private Logger logger = LoggerFactory.getLogger(APIRouteBuilder.class);
+
+	private Boolean useRestApi;
 
 	@Override
 	public void configure() throws Exception {
-		if("true".equals(properties.get("rest.api.enabled"))) {
+		logger.info("setup api routes:" + useRestApi);
+		if (useRestApi) {
 			rest("/jobs").id("restRouteOverview").get().outType(Jobs.class).to("restRouteManagement");
 			rest("/jobs/{jobName}").id("restRouteJobInfo").get().outType(JobStatus.class).to("restRouteStatus");
 			rest("/jobs/{name}").id("restRouteStartJob").post().outType(JobResult.class).to("restRouteStarter");
@@ -28,7 +30,10 @@ public class APIRouteBuilder extends RouteBuilder {
 			from("quartz2://resetMetricsTimer?cron={{metrics.reset.cron}}").id("resetMetrics").to(
 					"bean:metricHelper?method=resetMetrics");
 		}
-
 	}
 
+	@Value("${rest.api.enabled}")
+	public void setRestApiEnabled(String enabled) {
+		this.useRestApi = (enabled != null && enabled.equalsIgnoreCase("true"));
+	}
 }
