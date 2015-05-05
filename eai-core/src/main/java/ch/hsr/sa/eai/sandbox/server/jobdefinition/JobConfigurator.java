@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.CamelContextAware;
+import org.apache.camel.Exchange;
+import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.builder.SimpleBuilder;
 import org.apache.camel.model.ModelCamelContext;
@@ -83,7 +85,9 @@ public class JobConfigurator implements ApplicationListener<ContextRefreshedEven
 							// update metrics
 							.setHeader("CamelMetricsName", simple("${routeId}.failed")).to("metrics:counter:nameNotUsed")
 							// write failed record to file
-							.to("file://failedRecords/?fileName=${headers.ExecutionId}-failed&fileExist=Append");
+							.to("file://failedRecords/?fileName=${headers.ExecutionId}-failed&fileExist=Append")
+							// write log message
+							.log("job failed! ${exception}\n${exception.stacktrace}");
 					if (config.shouldSendEmails()) {
 						// aggregate all messages
 						definition.aggregate(simple("header.ExecutionId"), new ExceptionAggregationStrategy())
