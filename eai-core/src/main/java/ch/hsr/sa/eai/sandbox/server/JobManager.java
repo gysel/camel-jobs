@@ -25,10 +25,8 @@ public class JobManager {
 	MetricHelper metricHelper;
 
 	private Logger logger = LoggerFactory.getLogger(JobManager.class);
-	private StopWatch sw;
 
 	public JobManager() {
-		sw = new StopWatch();
 	}
 
 	/**
@@ -38,8 +36,7 @@ public class JobManager {
 	 * @throws IllegalArgumentException
 	 *             when the job does not exist.
 	 * @throws IllegalArgumentException
-	 *             when a job is started that cannot be started by the
-	 *             JobManager.
+	 *             when a job is started that cannot be started by the JobManager.
 	 * @throws IllegalStateException
 	 *             when there is a problem with job naming.
 	 */
@@ -51,6 +48,7 @@ public class JobManager {
 		long countIgnoredBefore = metricHelper.getIgnoredRecords(jobName);
 		long countRejectedBefore = metricHelper.getRejectedRecords(jobName);
 
+		StopWatch sw = new StopWatch();
 		String endpointUri = "vm:trigger-" + jobName;
 		SedaEndpoint endpoint = (SedaEndpoint) template.getCamelContext().hasEndpoint(endpointUri);
 		// TODO instanceof check!
@@ -63,8 +61,7 @@ public class JobManager {
 			throw new IllegalArgumentException("Job " + jobName
 					+ " is based on a file poller and cannot be started manually.");
 		} else if (endpoint != null) {
-			// cannot set timeout in endpointUri as it won't be found by
-			// hasEndpoint
+			// cannot set timeout in endpointUri as it won't be found by hasEndpoint
 			endpoint.setTimeout(0);
 			sw.start();
 			logger.info("Starting job {}.", jobName);
