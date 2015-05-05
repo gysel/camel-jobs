@@ -11,7 +11,8 @@ public class ListUtil {
 		int partBegin = 0;
 		for (int i = 1; i <= Math.ceil(parts); i++) {
 			List<T> subList = new ArrayList<>();
-			subList.addAll(list.subList(partBegin * size, (i * size)));
+			int toIndex = Math.min(list.size(), i * size);
+			subList.addAll(list.subList(partBegin * size, toIndex));
 			result.add(subList);
 			partBegin = i;
 		}
