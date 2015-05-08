@@ -15,7 +15,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration
+@ContextConfiguration("/JobConfiguratorTest-context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class JobConfiguratorTest implements CamelContextAware {
 
