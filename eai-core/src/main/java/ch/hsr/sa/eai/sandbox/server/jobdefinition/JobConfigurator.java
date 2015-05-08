@@ -83,7 +83,9 @@ public class JobConfigurator implements ApplicationListener<ContextRefreshedEven
 							// update metrics
 							.setHeader("CamelMetricsName", simple("${routeId}.failed")).to("metrics:counter:nameNotUsed")
 							// write failed record to file
-							.to("file://failedRecords/?fileName=${headers.ExecutionId}-failed&fileExist=Append");
+							.to("file://failedRecords/?fileName=${headers.ExecutionId}-failed&fileExist=Append")
+							// write log message
+							.log("job failed! ${exception}\n${exception.stacktrace}");
 					if (config.shouldSendEmails()) {
 						// aggregate all messages
 						definition.aggregate(simple("header.ExecutionId"), new ExceptionAggregationStrategy())
