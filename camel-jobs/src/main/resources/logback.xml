@@ -15,7 +15,7 @@
 		<file>eai.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<!-- daily rollover -->
-			<fileNamePattern>sandbox.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<fileNamePattern>jobs.%d{yyyy-MM-dd}.log</fileNamePattern>
 			<!-- keep 30 days' worth of history -->
 			<maxHistory>30</maxHistory>
 		</rollingPolicy>
