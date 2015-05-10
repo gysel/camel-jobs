@@ -11,8 +11,7 @@
 		<camel-version>2.14.0</camel-version>
 		<spring-version>4.1.4.RELEASE</spring-version>
 		<slf4j-version>1.7.10</slf4j-version>
-		<apachemq-version>5.7.0</apachemq-version>
-		<apachemq-camel-version>5.11.1</apachemq-camel-version>
+		<apachemq-version>5.11.1</apachemq-version>
 		<logback-version>1.0.13</logback-version>
 		<jolokia-version>1.2.3</jolokia-version>
 		<maven.compiler.source>1.7</maven.compiler.source>
@@ -120,11 +119,11 @@
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-camel</artifactId>
-			<version>${apachemq-camel-version}</version>
+			<version>${apachemq-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-core</artifactId>
+			<artifactId>activemq-broker</artifactId>
 			<version>${apachemq-version}</version>
 		</dependency>
 		<dependency>
