@@ -20,8 +20,9 @@
 			<list>
 				<value>classpath:application.core.properties</value>
 				<value>classpath:application.default.properties</value>
-				<value>file:./application.properties</value>
 				<value>classpath:sql.properties</value>
+				<value>classpath:application.properties</value>
+				<value>classpath:application.test.properties</value>
 			</list>
 		</property>
 	</bean>
