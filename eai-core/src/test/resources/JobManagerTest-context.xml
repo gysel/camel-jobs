@@ -8,9 +8,9 @@
 
 	<camel:template id="producerTemplate"  />
 
-	<bean id="jobManager" class="ch.hsr.sa.eai.sandbox.server.JobManager" />
+	<bean id="jobManager" class="ch.hsr.camel.jobs.trigger.JobManager" />
 
-	<bean id="metricHelper" class="ch.hsr.sa.eai.sandbox.server.rest.MetricHelper" />
+	<bean id="metricHelper" class="ch.hsr.camel.jobs.trigger.rest.MetricHelper" />
 	<bean id="metricRegistry" class="com.codahale.metrics.MetricRegistry" />
 
 	<bean id="metricsRoutePolicyFactory" 
@@ -24,8 +24,6 @@
 			<delay><constant>2000</constant></delay>		
 			<to uri="mock:result" />
 		</route>
-		
-
 	</camelContext>
 
 </beans>

@@ -26,7 +26,7 @@
 		</property>
 	</bean>
 
-	<context:component-scan base-package="ch.hsr.sa.eai" />
+	<context:component-scan base-package="ch.hsr.camel.jobs" />
 	<context:annotation-config />
 
 	<broker:broker persistent="false" brokerName="myBroker">
@@ -52,11 +52,7 @@
 
 	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
 		<routeBuilder ref="apiRouteBuilder" />
-		
-		<restConfiguration component="jetty" host="0.0.0.0" port="12345" bindingMode="json_xml">
-<!-- 			<dataFormatProperty key="json.in.disableFeatures" value="FAIL_ON_UNKNOWN_PROPERTIES,ADJUST_DATES_TO_CONTEXT_TIME_ZONE"/> -->
-<!-- 			<dataFormatProperty key="json.in.enableFeatures" value="FAIL_ON_NUMBERS_FOR_ENUMS,USE_BIG_DECIMAL_FOR_FLOATS"/> -->
-		</restConfiguration>
+		<restConfiguration component="jetty" host="0.0.0.0" port="12345" bindingMode="json_xml" />
 		
 	</camelContext>
 
