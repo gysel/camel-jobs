@@ -3,7 +3,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camel="http://camel.apache.org/schema/spring"
-	xmlns:broker="http://activemq.apache.org/schema/core" xmlns:jolokia="http://www.jolokia.org/jolokia-spring/schema/config"
+	xmlns:jolokia="http://www.jolokia.org/jolokia-spring/schema/config"
 	xsi:schemaLocation="http://www.jolokia.org/jolokia-spring/schema/config https://raw.githubusercontent.com/rhuss/jolokia/master/agent/jvm-spring/src/main/resources/org/jolokia/jvmagent/spring/jolokia-config.xsd
 	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 	http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context-3.0.xsd
@@ -29,17 +29,17 @@
 		</property>
 	</bean>
 
-	<broker:broker persistent="false" brokerName="myBroker">
-		<broker:transportConnectors>
+	<broker persistent="false" brokerName="myBroker" xmlns="http://activemq.apache.org/schema/core">
+		<transportConnectors>
 			<!-- expose a VM transport for in-JVM transport between AMQ and Camel 
 				on the server side -->
-			<broker:transportConnector name="vm"
+			<transportConnector name="vm"
 				uri="vm://myBroker" />
 			<!-- expose a TCP transport for clients to use -->
-			<broker:transportConnector name="tcp"
+			<transportConnector name="tcp"
 				uri="tcp://localhost:61616" />
-		</broker:transportConnectors>
-	</broker:broker>
+		</transportConnectors>
+	</broker>
 
 	<bean id="jms" class="org.apache.activemq.camel.component.ActiveMQComponent">
 		<property name="brokerURL" value="vm://myBroker" />
