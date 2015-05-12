@@ -1,6 +1,8 @@
 package ch.hsr.camel.jobs.trigger;
 
 import org.apache.camel.Exchange;
+import org.apache.camel.Header;
+import org.apache.camel.Processor;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.Route;
 import org.apache.camel.component.seda.SedaEndpoint;
@@ -29,6 +31,14 @@ public class JobManager {
 	public JobManager() {
 	}
 
+	public JobResult startJob(String jobName) {
+		return startJob(jobName, null);
+	}
+
+	public JobResult startJob(@Header("jobName") String jobName, Exchange exchange) {
+		return startJob(jobName, exchange.getIn().getBody());
+	}
+
 	/**
 	 * start a job
 	 * 
@@ -40,7 +50,7 @@ public class JobManager {
 	 * @throws IllegalStateException
 	 *             when there is a problem with job naming.
 	 */
-	public JobResult startJob(String jobName) {
+	public JobResult startJob(String jobName, final Object data) {
 		String executionId;
 		Status status = JobResult.Status.SUCCESSFUL;
 		long countSuccessfulBefore = metricHelper.getSuccessfulRecords(jobName);
@@ -65,7 +75,12 @@ public class JobManager {
 			endpoint.setTimeout(0);
 			sw.start();
 			logger.info("Starting job {}.", jobName);
-			Exchange result = template.request(endpoint, null);
+			Exchange result = template.request(endpoint, new Processor() {
+				@Override
+				public void process(Exchange exchange) throws Exception {
+					exchange.getIn().setBody(data);
+				}
+			});
 			if (result.getException() != null) {
 				logger.error("Job {} failed.", jobName, result.getException());
 				if (result.getException() instanceof UnexpectedRollbackException) {
