@@ -6,6 +6,7 @@ import org.apache.camel.EndpointInject;
 import org.apache.camel.Produce;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.component.mock.MockEndpoint;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import ch.hsr.camel.jobs.trigger.JobManager;
+import ch.hsr.camel.jobs.trigger.rest.api.JobResult;
 
 @ContextConfiguration("/JobManagerTest-context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -42,6 +43,14 @@ public class JobManagerTest implements CamelContextAware {
 		executor.execute(new JobRunner());
 
 		resultEndpoint.assertIsSatisfied();
+	}
+
+	@Test
+	public void testMetricsSuccessfullRecords() {
+		int[] intArray = new int[] { 1, 2, 3, 4, 5 };
+		JobResult result = jobManager.startJob("job-testroute-countRecords", intArray);
+		Assert.assertTrue(intArray.length == result.getSuccessfulRecords());
+
 	}
 
 	public class JobRunner implements Runnable {

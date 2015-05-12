@@ -24,6 +24,16 @@
 			<delay><constant>2000</constant></delay>		
 			<to uri="mock:result" />
 		</route>
+		
+		<route id="job-testroute-countRecords">
+			<from uri="vm:trigger-job-testroute-countRecords" />
+			<split>
+				<simple>${body}</simple>	
+				<to uri="metrics:counter:job-testroute-countRecords.successful" />
+				<to uri="mock:result" />
+			</split>
+		</route>
+		
 	</camelContext>
 
 </beans>
