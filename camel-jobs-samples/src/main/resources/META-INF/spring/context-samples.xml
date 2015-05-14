@@ -33,7 +33,7 @@
 			<to uri="metrics:counter:job-print-sunset.successful" />
 		</route>
 
-		<route id="job-current-position-iss">
+		<route id="job-current-position-iss"> <!-- prints the current position of the Internation Space Station -->
 			<from uri="vm:trigger-job-current-position-iss" />
 			<to uri="ahc:http://api.open-notify.org/iss-now.json" />
 			<convertBodyTo type="String" />
