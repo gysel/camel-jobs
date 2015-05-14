@@ -36,7 +36,11 @@ public class JobManager {
 	}
 
 	public JobResult startJob(@Header("jobName") String jobName, Exchange exchange) {
-		return startJob(jobName, exchange.getIn().getBody());
+		if (exchange != null && exchange.getIn() != null) {
+			return startJob(jobName, exchange.getIn().getBody());
+		} else {
+			return startJob(jobName, (Object) null);
+		}
 	}
 
 	/**
@@ -105,6 +109,7 @@ public class JobManager {
 		jobResult.setFailedRecords(failedRecords);
 		jobResult.setIgnoredRecords(ignoredRecords);
 		jobResult.setRejectedRecords(rejectedRecords);
+		jobResult.setJobDuration(sw.getLastTaskTimeMillis());
 
 		logger.info("Job {} finished in {}ms. {}", jobName, sw.getLastTaskTimeMillis(), jobResult.getDetails());
 

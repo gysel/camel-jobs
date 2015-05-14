@@ -64,35 +64,40 @@ public class JobConfigurator implements ApplicationListener<ContextRefreshedEven
 				@Override
 				public void configure() throws Exception {
 					// intercept From
-					interceptFrom().setHeader("ExecutionId", simple("${routeId}-${date:now:yyyyMMdd-HHmmss}")).log("${headers.ExecutionId} started");
+					interceptFrom().setHeader("ExecutionId", simple("${routeId}-${date:now:yyyyMMdd-HHmmss}")).log(
+							"${headers.ExecutionId} started");
 
 					// exception onComplete
 					// TODO: is not invoked anymore?
-					if(config.shouldSendEmails()) {
+					if (config.shouldSendEmails()) {
 						SimpleBuilder emailBody = simple("<simple>An exception has occured during process of ${header.ExecutionId} \n ${exception.message} ${exception.stacktrace}</simple>");
-						String emailEndpoint = "smtp://" + config.getMailserverConnection() + "&subject=Exception in integration job";
+						String emailEndpoint = "smtp://" + config.getMailserverConnection()
+								+ "&subject=Exception in integration job";
 						onCompletion().onFailureOnly().wireTap(emailEndpoint).newExchangeBody(emailBody).end();
 					}
 
 					// exception
 					OnExceptionDefinition definition = onException(RuntimeException.class)
-					// onException configuration
+							// onException configuration
 							.maximumRedeliveries(1).handled(true)
 							// prepare for output
 							.convertBodyTo(String.class).transform(simple("${in.body}\n"))
 							// update metrics
-							.setHeader("CamelMetricsName", simple("${routeId}.failed")).to("metrics:counter:nameNotUsed")
+							.setHeader("CamelMetricsName", simple("${routeId}.failed"))
+							.to("metrics:counter:nameNotUsed")
 							// write failed record to file
 							.to("file://failedRecords/?fileName=${headers.ExecutionId}-failed&fileExist=Append")
 							// write log message
 							.log("job failed! ${exception}\n${exception.stacktrace}");
 					if (config.shouldSendEmails()) {
 						// aggregate all messages
-						definition.aggregate(simple("header.ExecutionId"), new ExceptionAggregationStrategy())
-						// wait 30 sec for further failed records so that
-						// not multiple mails are sent per job
-						.completionTimeout(30000)
-						.to("smtp:" + config.getMailserverConnection() + "&subject=New error file in integration job");
+						definition
+								.aggregate(simple("header.ExecutionId"), new ExceptionAggregationStrategy())
+								// wait 30 sec for further failed records so that
+								// not multiple mails are sent per job
+								.completionTimeout(30000)
+								.to("smtp:" + config.getMailserverConnection()
+										+ "&subject=New error file in integration job");
 					}
 				}
 			});

@@ -50,7 +50,12 @@ public class JobManagerTest implements CamelContextAware {
 		int[] intArray = new int[] { 1, 2, 3, 4, 5 };
 		JobResult result = jobManager.startJob("job-testroute-countRecords", intArray);
 		Assert.assertTrue(intArray.length == result.getSuccessfulRecords());
+	}
 
+	@Test
+	public void testPerformanceInJobResult() {
+		JobResult result = jobManager.startJob("job-testroute-delayed", null);
+		Assert.assertTrue(result.getJobDurationInMilis() > 2000);
 	}
 
 	public class JobRunner implements Runnable {

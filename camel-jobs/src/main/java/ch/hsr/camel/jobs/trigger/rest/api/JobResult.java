@@ -27,6 +27,7 @@ public class JobResult {
 	 */
 	private Long rejectedRecords = 0L;
 	private String executionId;
+	private long jobDurationInMilis;
 
 	public JobResult(String jobName, Status status, String executionId) {
 		this.jobName = jobName;
@@ -109,6 +110,14 @@ public class JobResult {
 
 	public void setIgnoredRecords(Long ignoredRecords) {
 		this.ignoredRecords = ignoredRecords;
+	}
+
+	public void setJobDuration(long jobDurationInMilis) {
+		this.jobDurationInMilis = jobDurationInMilis;
+	}
+
+	public long getJobDurationInMilis() {
+		return jobDurationInMilis;
 	}
 
 }
