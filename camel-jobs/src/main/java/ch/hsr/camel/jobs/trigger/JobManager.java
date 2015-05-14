@@ -96,7 +96,7 @@ public class JobManager {
 			executionId = getExecutionId(result);
 			sw.stop();
 		} else {
-			throw new IllegalStateException("Jobs are not named according to the convention. Endpointuri: "
+			throw new IllegalStateException("Jobs are not named according to the convention. Missing endpoint: "
 					+ endpointUri);
 		}
 
