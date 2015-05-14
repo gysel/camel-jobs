@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:broker="http://activemq.apache.org/schema/core"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd 
+    http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd">
+
+	<context:component-scan base-package="ch.hsr.sa.eai.samples" />
+
+	<camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+		<routeBuilder ref="apiRouteBuilder" />
+
+		<dataFormats>
+			<json id="jack" library="Jackson" unmarshalTypeName="ch.hsr.camel.jobs.samples.IssLocation" />
+		</dataFormats>
+
+		<restConfiguration component="jetty" host="0.0.0.0"
+			port="8080" bindingMode="json_xml">
+		</restConfiguration>
+
+		<route id="job-print-sunset"> <!-- prints todays sunset time in Zurich, Switzerland -->
+			<from uri="vm:trigger-job-print-sunset" />
+			<to
+				uri="ahc:https://query.yahooapis.com/v1/public/yql?q=select%20astronomy.sunset%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22zurich%22)&amp;format=xml&amp;env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys" />
+			<setBody>
+				<xpath>//*/@sunset</xpath>
+			</setBody>
+			<log message="Sunset in Zurich is today at ${body}." />
+			<to uri="metrics:counter:job-print-sunset.successful" />
+		</route>
+
+		<route id="job-current-position-iss">
+			<from uri="vm:trigger-job-current-position-iss" />
+			<to uri="ahc:http://api.open-notify.org/iss-now.json" />
+			<convertBodyTo type="String" />
+			<unmarshal ref="jack" />
+			<to uri="metrics:counter:job-current-position-iss.successful" />
+			<log message="The Internation Space Station is currently here: ${body.issPosition.latitude} (lat), ${body.issPosition.longitude} (long)" />
+		</route>
+
+	</camelContext>
+
+</beans>
