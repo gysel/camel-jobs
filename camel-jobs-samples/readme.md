@@ -17,12 +17,18 @@ java -jar camel-jobs-samples-0.0.1-SNAPSHOT.jar -fa classpath*:META-INF/spring/*
 
 Get a list of all jobs
 
-   curl -X GET http://localhost:8080/jobs
+``` bash
+curl -X GET http://localhost:8080/jobs
+```
 
 Get a job status
 
-   curl -X GET http://localhost:8080/jobs/job-current-position-iss
+``` bash
+curl -X GET http://localhost:8080/jobs/job-current-position-iss
+```
 
 Start a job
 
-   curl -X POST http://localhost:8080/jobs/job-current-position-iss
+``` bash
+curl -X POST http://localhost:8080/jobs/job-current-position-iss
+```
