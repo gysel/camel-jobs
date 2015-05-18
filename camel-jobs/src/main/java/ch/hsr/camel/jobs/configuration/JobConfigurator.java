@@ -68,7 +68,6 @@ public class JobConfigurator implements ApplicationListener<ContextRefreshedEven
 							"${headers.ExecutionId} started");
 
 					// exception onComplete
-					// TODO: is not invoked anymore?
 					if (config.shouldSendEmails()) {
 						SimpleBuilder emailBody = simple("<simple>An exception has occured during process of ${header.ExecutionId} \n ${exception.message} ${exception.stacktrace}</simple>");
 						String emailEndpoint = "smtp://" + config.getMailserverConnection()
