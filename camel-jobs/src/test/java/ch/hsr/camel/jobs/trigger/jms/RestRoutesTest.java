@@ -1,12 +1,14 @@
 package ch.hsr.camel.jobs.trigger.jms;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.is;
+
 import org.apache.camel.CamelContext;
 import org.apache.camel.EndpointInject;
-import org.apache.camel.Exchange;
 import org.apache.camel.Produce;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.component.jms.JmsMessage;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,16 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
-import org.springframework.test.context.transaction.BeforeTransaction;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import ch.hsr.camel.jobs.trigger.rest.api.JobResult;
-import ch.hsr.camel.jobs.trigger.rest.api.JobResult.Status;
 import ch.hsr.camel.jobs.trigger.rest.api.JobStatus;
 import ch.hsr.camel.jobs.trigger.rest.api.Jobs;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ContextConfiguration("/test-context.xml")
 public class RestRoutesTest extends AbstractJUnit4SpringContextTests {
