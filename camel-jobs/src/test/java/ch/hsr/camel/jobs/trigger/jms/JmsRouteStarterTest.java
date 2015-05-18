@@ -5,6 +5,7 @@ import org.apache.camel.EndpointInject;
 import org.apache.camel.Produce;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.component.jms.JmsMessage;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,12 +16,15 @@ import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import ch.hsr.camel.jobs.trigger.rest.api.JobResult;
 import ch.hsr.camel.jobs.trigger.rest.api.JobResult.Status;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+
 
 @ContextConfiguration("/test-context.xml")
 @DirtiesContext
 public class JmsRouteStarterTest extends AbstractJUnit4SpringContextTests {
 
-	private static final String JOB_NAME = "somejob";
+	private static final String JOB_NAME = "job-somejob";
 
 	@Autowired
 	protected CamelContext camelContext;
@@ -37,12 +41,13 @@ public class JmsRouteStarterTest extends AbstractJUnit4SpringContextTests {
 		expectedResult.setJobName(JOB_NAME);
 		expectedResult.setStatus(Status.SUCCESSFUL);
 
-		resultEndpoint.expectedMessageCount(1);
 		String expectedBody = JOB_NAME + "[status=" + Status.SUCCESSFUL;
-		resultEndpoint.expectedBodyReceived().body().startsWith(expectedBody);
 
 		template.sendBodyAndHeader(null, "JobName", JOB_NAME);
 
+		resultEndpoint.expectedMessageCount(1);
+		String actualBody = (String) resultEndpoint.getExchanges().get(0).getIn(JmsMessage.class).getBody();
+		assertThat(actualBody, startsWith(expectedBody));
 		resultEndpoint.assertIsSatisfied();
 	}
 
@@ -52,8 +57,8 @@ public class JmsRouteStarterTest extends AbstractJUnit4SpringContextTests {
 			@Override
 			public void configure() throws Exception {
 				// dummy job to be started from JMS
-				from("vm:trigger-somejob").id(JOB_NAME).to("log:ch.hsr.sa.eai.sandbox.server.jms").end();
-				from("direct:send-jms").inOut("jms:JobTrigger").to("mock:jmsreply");
+				from("vm:trigger-" + JOB_NAME).id(JOB_NAME).to("log:ch.hsr.sa.eai.sandbox.server.jms").end();
+				from("direct:send-jms").inOut("jms:JobTrigger").to("mock:jmsreply").end();
 			}
 		});
 	}
