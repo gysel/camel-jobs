@@ -32,7 +32,7 @@ public class JobManager {
 	}
 
 	public JobResult startJob(String jobName) {
-		return startJob(jobName, null);
+		return startJob(jobName, (Object) null);
 	}
 
 	public JobResult startJob(@Header("jobName") String jobName, Exchange exchange) {
