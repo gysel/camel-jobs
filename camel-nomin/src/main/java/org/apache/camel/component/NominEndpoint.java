@@ -53,8 +53,4 @@ public class NominEndpoint extends DefaultEndpoint {
 		return destination;
 	}
 
-	public void setDestination(String destination) {
-		this.destination = destination;
-	}
-
 }
