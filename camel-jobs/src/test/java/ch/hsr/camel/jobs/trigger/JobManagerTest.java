@@ -6,6 +6,7 @@ import org.apache.camel.EndpointInject;
 import org.apache.camel.Produce;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.component.mock.MockEndpoint;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -73,6 +74,11 @@ public class JobManagerTest implements CamelContextAware {
 	@Override
 	public CamelContext getCamelContext() {
 		return this.camelContext;
+	}
+
+	@After
+	public void cleanup() {
+		MockEndpoint.resetMocks(camelContext);
 	}
 
 }
