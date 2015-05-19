@@ -1,5 +1,6 @@
 package ch.hsr.camel.jobs.trigger;
 
+import org.apache.camel.Body;
 import org.apache.camel.Exchange;
 import org.apache.camel.Header;
 import org.apache.camel.Processor;
@@ -35,14 +36,6 @@ public class JobManager {
 		return startJob(jobName, (Object) null);
 	}
 
-	public JobResult startJob(@Header("jobName") String jobName, Exchange exchange) {
-		if (exchange != null && exchange.getIn() != null) {
-			return startJob(jobName, exchange.getIn().getBody());
-		} else {
-			return startJob(jobName, (Object) null);
-		}
-	}
-
 	/**
 	 * start a job
 	 * 
@@ -54,7 +47,7 @@ public class JobManager {
 	 * @throws IllegalStateException
 	 *             when there is a problem with job naming.
 	 */
-	public JobResult startJob(String jobName, final Object data) {
+	public JobResult startJob(@Header("jobName") String jobName, @Body final Object data) {
 		String executionId;
 		Status status = JobResult.Status.SUCCESSFUL;
 		long countSuccessfulBefore = metricHelper.getSuccessfulRecords(jobName);
