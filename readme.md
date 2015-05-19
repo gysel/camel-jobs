@@ -1,5 +1,5 @@
 
-`camel-jobs` was developed as part of a semester thesis at [HSR](http://www.hsr.ch) by [Michael Gysel](https://github.com/gysel) and [Lukas Koelbener](https://github.com/koelbener) and aims to enhance Apache Camel with additional components so that it can be used as an integration job engine.
+`camel-jobs` was developed as part of a semester thesis at [HSR](http://www.hsr.ch) by [Michael Gysel](https://github.com/gysel) and [Lukas Koelbener](https://github.com/koelbener). It aims to enhance Apache Camel with additional components so that it can be used as an integration job engine.
 
 `camel-jobs` does currently not provide stable releases. Hopefully this will change in the near future.  
 
