@@ -1,5 +1,7 @@
 package ch.hsr.camel.jobs.trigger;
 
+import java.util.HashMap;
+
 import org.apache.camel.CamelContext;
 import org.apache.camel.CamelContextAware;
 import org.apache.camel.EndpointInject;
@@ -49,13 +51,13 @@ public class JobManagerTest implements CamelContextAware {
 	@Test
 	public void testMetricsSuccessfullRecords() {
 		int[] intArray = new int[] { 1, 2, 3, 4, 5 };
-		JobResult result = jobManager.startJob("job-testroute-countRecords", intArray);
+		JobResult result = jobManager.startJob("job-testroute-countRecords", new HashMap<String, Object>(), intArray);
 		Assert.assertTrue(intArray.length == result.getSuccessfulRecords());
 	}
 
 	@Test
 	public void testPerformanceInJobResult() {
-		JobResult result = jobManager.startJob("job-testroute-delayed", null);
+		JobResult result = jobManager.startJob("job-testroute-delayed", new HashMap<String, Object>(), null);
 		Assert.assertTrue(result.getJobDurationInMilis() > 2000);
 	}
 

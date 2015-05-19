@@ -1,8 +1,12 @@
 package ch.hsr.camel.jobs.trigger;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.camel.Body;
 import org.apache.camel.Exchange;
 import org.apache.camel.Header;
+import org.apache.camel.Headers;
 import org.apache.camel.Processor;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.Route;
@@ -33,7 +37,7 @@ public class JobManager {
 	}
 
 	public JobResult startJob(String jobName) {
-		return startJob(jobName, (Object) null);
+		return startJob(jobName, new HashMap<String, Object>(), (Object) null);
 	}
 
 	/**
@@ -47,7 +51,7 @@ public class JobManager {
 	 * @throws IllegalStateException
 	 *             when there is a problem with job naming.
 	 */
-	public JobResult startJob(@Header("jobName") String jobName, @Body final Object data) {
+	public JobResult startJob(@Header("jobName") String jobName, @Headers final Map<String, Object> headers, @Body final Object data) {
 		String executionId;
 		Status status = JobResult.Status.SUCCESSFUL;
 		long countSuccessfulBefore = metricHelper.getSuccessfulRecords(jobName);
@@ -76,6 +80,8 @@ public class JobManager {
 				@Override
 				public void process(Exchange exchange) throws Exception {
 					exchange.getIn().setBody(data);
+					exchange.getIn().setHeaders(headers);
+					
 				}
 			});
 			if (result.getException() != null) {
