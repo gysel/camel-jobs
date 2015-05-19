@@ -27,9 +27,6 @@ public class RestRouteManagement {
 			// add a slash if not provided by the incoming uri
 			uri = uri.endsWith("/") ? uri + jobName : uri + "/" + jobName;
 			if (endpointUri.startsWith(ROUTE_PREFIX)) {
-				// jobName = endpointUri.replace(ROUTE_PREFIX, "");
-				result.add(new Job(jobName, uri));
-			} else if (endpointUri.startsWith("file://")) {
 				result.add(new Job(jobName, uri));
 			}
 		}
