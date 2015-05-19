@@ -6,7 +6,7 @@
 ## Maven Projects
 
 * `camel-nomin` integrates [Nomin](https://github.com/dobrynya/nomin) into Apache Camel.
-* `camel-jobs` enhances Apache Camel with a job engine. Error handling, monitoring and triggers (JMX, REST, JMS) are automatically added to all routes whose id starts with `job-`.
+* `camel-jobs` enhances Apache Camel with a job engine. Error handling, monitoring and triggers (JMX, RESTful HTTP, JMS) are automatically added to all routes whose id starts with `job-`.
 * `camel-jobs-samples` showcases the job engine using some sample jobs.
 
 
