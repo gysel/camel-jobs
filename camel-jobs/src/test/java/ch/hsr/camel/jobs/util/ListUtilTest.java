@@ -14,7 +14,7 @@ public class ListUtilTest {
 	@Test
 	public void testPartition() {
 		sut.configure("2");
-		List<Integer> given = Arrays.asList(new Integer[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
+		List<Integer> given = Arrays.asList(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
 		//
 		List<List<Integer>> partitions = sut.partition(given);
 		//
@@ -27,7 +27,7 @@ public class ListUtilTest {
 	@Test
 	public void testOverflow() {
 		sut.configure("15");
-		List<Integer> given = Arrays.asList(new Integer[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
+		List<Integer> given = Arrays.asList(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
 		//
 		List<List<Integer>> partitions = sut.partition(given);
 		//

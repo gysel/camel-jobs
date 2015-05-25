@@ -3,6 +3,7 @@ package ch.hsr.camel.jobs.trigger.rest.api;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @XmlRootElement(name = "jobResult")
 public class JobResult {
@@ -86,6 +87,14 @@ public class JobResult {
 		} else {
 			return false;
 		}
+	}
+	
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(jobName).append(status)
+				.append(successfulRecords).append(rejectedRecords)
+				.append(ignoredRecords).append(failedRecords)
+				.append(executionId).hashCode();
 	}
 
 	public Long getRejectedRecords() {

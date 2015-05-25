@@ -37,10 +37,10 @@ public class RestRoutesTest extends AbstractJUnit4SpringContextTests {
 	private ProducerTemplate loadJobDetails;
 
 	@EndpointInject(uri = "mock:jobList")
-	protected MockEndpoint jobList;
+	private MockEndpoint jobList;
 	
 	@EndpointInject(uri = "mock:jobStatus")
-	protected MockEndpoint jobStatus;
+	private MockEndpoint jobStatus;
 
 	@Test
 	@DirtiesContext

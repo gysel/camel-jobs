@@ -45,7 +45,7 @@ public class JobConfiguratorTest implements CamelContextAware {
 	@Test
 	public void testOnExceptionHandlerExists() throws Exception {
 		resultEndpoint.expectedMessageCount(1);
-		templateWithException.sendBody(new int[] { 1, 2, 3 });
+		templateWithException.sendBody(new int[] {1, 2, 3});
 		resultEndpoint.assertIsSatisfied();
 		Object id = resultEndpoint.getExchanges().get(0).getIn().getHeader("ExecutionId");
 

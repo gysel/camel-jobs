@@ -50,7 +50,7 @@ public class JobManagerTest implements CamelContextAware {
 
 	@Test
 	public void testMetricsSuccessfullRecords() {
-		int[] intArray = new int[] { 1, 2, 3, 4, 5 };
+		int[] intArray = new int[] {1, 2, 3, 4, 5};
 		JobResult result = jobManager.startJob("job-testroute-countRecords", new HashMap<String, Object>(), intArray);
 		Assert.assertTrue(intArray.length == result.getSuccessfulRecords());
 	}

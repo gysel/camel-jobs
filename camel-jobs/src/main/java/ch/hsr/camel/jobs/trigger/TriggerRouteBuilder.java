@@ -34,6 +34,6 @@ public class TriggerRouteBuilder extends RouteBuilder {
 
 	@Value("${rest.api.enabled}")
 	public void setRestApiEnabled(String enabled) {
-		this.useRestApi = (enabled != null && enabled.equalsIgnoreCase("true"));
+		this.useRestApi = enabled != null && enabled.equalsIgnoreCase("true");
 	}
 }

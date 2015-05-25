@@ -29,7 +29,7 @@ public class JobManager {
 	private ProducerTemplate template;
 
 	@Autowired
-	MetricHelper metricHelper;
+	private MetricHelper metricHelper;
 
 	private Logger logger = LoggerFactory.getLogger(JobManager.class);
 

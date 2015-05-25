@@ -23,7 +23,7 @@ public class JobConfigurator implements ApplicationListener<ContextRefreshedEven
 
 	// use ModelCamelContext, CamelContext.getRouteDefinitions() is deprecated
 	private ModelCamelContext camelContext;
-	private boolean initiated = false;
+	private boolean initiated; // default is false
 
 	@Autowired
 	private JobConfiguration config;
@@ -69,7 +69,8 @@ public class JobConfigurator implements ApplicationListener<ContextRefreshedEven
 
 					// exception onComplete
 					if (config.shouldSendEmails()) {
-						SimpleBuilder emailBody = simple("<simple>An exception has occured during process of ${header.ExecutionId} \n ${exception.message} ${exception.stacktrace}</simple>");
+						SimpleBuilder emailBody = simple("<simple>An exception has occured during process of "
+								+ "${header.ExecutionId} \n ${exception.message} ${exception.stacktrace}</simple>");
 						String emailEndpoint = "smtp://" + config.getMailserverConnection()
 								+ "&subject=Exception in integration job";
 						onCompletion().onFailureOnly().wireTap(emailEndpoint).newExchangeBody(emailBody).end();

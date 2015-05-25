@@ -25,7 +25,7 @@ public class MetricHelper {
 
 
 	@Autowired
-	MetricRegistry metricRegistry;
+	private MetricRegistry metricRegistry;
 
 	public Long getCounterValue(String jobName, String counterName) {
 		SortedMap<String, Counter> counters = metricRegistry.getCounters();
