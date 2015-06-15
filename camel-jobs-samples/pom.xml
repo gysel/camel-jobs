@@ -13,8 +13,8 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>ch.hsr.eai.sa</groupId>
-			<artifactId>eai-core</artifactId>
+			<groupId>ch.hsr.camel.jobs</groupId>
+			<artifactId>camel-jobs</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
