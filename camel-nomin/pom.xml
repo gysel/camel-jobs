@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ch.hsr.sa.eai.camel</groupId>
 	<artifactId>camel-nomin</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>0.1</version>
 
 	<name>Camel Nomin Component</name>
 	<url>http://www.hsr.ch</url>
