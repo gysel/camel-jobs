@@ -9,7 +9,6 @@
 	http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context-3.0.xsd
     http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd 
     http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd">
-	<!-- jolokia-spring's xsd is directly referenced from github as the official url returns a 404 -->
 
 	<camel:template id="producerTemplate"  />
 
